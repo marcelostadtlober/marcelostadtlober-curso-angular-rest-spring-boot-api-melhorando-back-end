@@ -47,9 +47,9 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		LocalDate ultimoDia = mesReferencia.withDayOfMonth(mesReferencia.lengthOfMonth());
 		
 		criteriaQuery.where(
-				criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.DATA_VENCIMENTO),
+				criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento),
 						primeiroDia),
-				criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.DATA_VENCIMENTO),
+				criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento),
 						ultimoDia));
 		
 		criteriaQuery.groupBy(root.get(Lancamento_.categoria));
