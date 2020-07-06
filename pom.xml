@@ -21,6 +21,10 @@
 		
 		<spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
 		<spring-security-jwt.version>1.1.0.RELEASE</spring-security-jwt.version>
+		
+		<jasperreports.version>6.5.1</jasperreports.version>
+        <jasperreports-functions.version>6.5.1</jasperreports-functions.version>
+        <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
 	</properties>
 
 	<dependencies>
@@ -91,6 +95,25 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<!-- JasperReports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+                
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-functions</artifactId>
+            <version>${jasperreports-functions.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>${jasperreports-fonts.version}</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -101,5 +124,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+        <repository>
+            <id>jr-ce-releases</id>
+            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases</url>
+        </repository>
+    </repositories>
 
 </project>
