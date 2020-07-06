@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import com.mstadtlober.algamoneyapi.dto.LancamentoEstatisticaCategoria;
 import com.mstadtlober.algamoneyapi.dto.LancamentoEstatisticaDia;
+import com.mstadtlober.algamoneyapi.dto.LancamentoEstatisticaPessoa;
 import com.mstadtlober.algamoneyapi.model.Categoria_;
 import com.mstadtlober.algamoneyapi.model.Lancamento;
 import com.mstadtlober.algamoneyapi.model.Lancamento_;
@@ -30,6 +31,35 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Override
+	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<LancamentoEstatisticaPessoa> criteriaQuery = criteriaBuilder.
+				createQuery(LancamentoEstatisticaPessoa.class);
+		
+		Root<Lancamento> root = criteriaQuery.from(Lancamento.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaPessoa.class,
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.pessoa),
+				criteriaBuilder.sum(root.get(Lancamento_.valor))));
+					
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento),
+						inicio),
+				criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento),
+						fim));
+		
+		criteriaQuery.groupBy(root.get(Lancamento_.tipo),
+				root.get(Lancamento_.pessoa));
+		
+		TypedQuery<LancamentoEstatisticaPessoa> typedQuery = manager.
+				createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
 	
 	@Override
 	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {
