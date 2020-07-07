@@ -1,17 +1,18 @@
 package com.mstadtlober.algamoneyapi.mail;
 
-//import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.context.event.ApplicationReadyEvent;
-//import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Component
 public class Mailer {
@@ -19,13 +20,39 @@ public class Mailer {
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	@Autowired
+	private TemplateEngine thymeleaf;
+	
+//	@Autowired
+//	private LancamentoRepository repo;
+	
 //	@EventListener
 //	private void teste(ApplicationReadyEvent event) {
-//		this.enviarEmail("teste1@gmail.com", 
-//				Arrays.asList("teste2@gmail.com"), 
-//				"Testando", "Olá!<br/>Teste ok.");
+//		String template = "mail/aviso-lancamentos-vencidos";
+//		
+//		List<Lancamento> lista = repo.findAll();
+//		
+//		Map<String, Object> variaveis = new HashMap<>();
+//		variaveis.put("lancamentos", lista);
+//		
+//		this.enviarEmail("dev.mstadtlober@gmail.com", 
+//				Arrays.asList("marcelostadtlober@gmail.com"), 
+//				"Testando", template, variaveis);
 //		System.out.println("Terminado o envio de e-mail...");
 //	}
+		
+	public void enviarEmail(String remetente, 
+			List<String> destinatarios, String assunto, String template,
+			Map<String, Object> variaveis) {
+		
+		Context context = new Context(new Locale("pt", "BR"));
+		
+		variaveis.entrySet().forEach(e -> context.setVariable(e.getKey(), e.getValue()));
+		
+		String mensagem  = thymeleaf.process(template, context);
+		
+		this.enviarEmail(remetente, destinatarios, assunto, mensagem);
+	}
 	
 	public void enviarEmail(String remetente, 
 			List<String> destinatarios, String assunto, String mensagem) {
