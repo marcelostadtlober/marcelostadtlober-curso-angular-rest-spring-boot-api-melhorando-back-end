@@ -38,6 +38,12 @@ public class AlgamoneyApiProperty {
 		private String accessKeyId;
 		
 		private String secretAccessKey;
+		
+		private String bucket = "aw-mstadtlober-algamoney-arquivos";
+		
+		public String getBucket() {
+			return bucket;
+		}
 
 		public String getAccessKeyId() {
 			return accessKeyId;
