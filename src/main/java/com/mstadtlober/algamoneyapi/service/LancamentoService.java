@@ -15,10 +15,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.mstadtlober.algamoneyapi.dto.LancamentoEstatisticaPessoa;
+import com.mstadtlober.algamoneyapi.mail.Mailer;
 import com.mstadtlober.algamoneyapi.model.Lancamento;
 import com.mstadtlober.algamoneyapi.model.Pessoa;
+import com.mstadtlober.algamoneyapi.model.Usuario;
 import com.mstadtlober.algamoneyapi.repository.LancamentoRepository;
 import com.mstadtlober.algamoneyapi.repository.PessoaRepository;
+import com.mstadtlober.algamoneyapi.repository.UsuarioRepository;
 import com.mstadtlober.algamoneyapi.service.exception.PessoaInexistenteOuInativaException;
 
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -29,15 +32,27 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Service
 public class LancamentoService {
 	
+	private static final String DESTINATARIOS = "ROLE_PESQUISAR_LANCAMENTO";
+	
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
 	
+	@Autowired
+	private UsuarioRepository usuarioReposity;
+	
+	@Autowired
+	private Mailer mailer;
+	
 	@Scheduled(cron = "0 0 6 * * *")
 	public void avisarSobreLancamentosVencidos() {
+		List<Lancamento> vencidos = lancamentoRepository.findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate.now());
 		
+		List<Usuario> destinatarios = usuarioReposity.findByPermissoesDescricao(DESTINATARIOS);
+		
+		mailer.avisarSobreLancamentosVencidos(vencidos, destinatarios);
 	}
 	
 	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim) throws Exception {
