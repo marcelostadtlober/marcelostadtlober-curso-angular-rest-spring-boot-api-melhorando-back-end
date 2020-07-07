@@ -14,7 +14,7 @@ public abstract class Usuario_ {
 	public static volatile SingularAttribute<Usuario, Long> codigo;
 	public static volatile SingularAttribute<Usuario, String> nome;
 	public static volatile SingularAttribute<Usuario, String> email;
-
+	
 	public static final String SENHA = "senha";
 	public static final String PERMISSOES = "permissoes";
 	public static final String CODIGO = "codigo";
@@ -22,4 +22,3 @@ public abstract class Usuario_ {
 	public static final String EMAIL = "email";
 
 }
-

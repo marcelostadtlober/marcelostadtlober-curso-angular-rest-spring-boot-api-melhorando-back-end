@@ -15,7 +15,7 @@ public abstract class Endereco_ {
 	public static volatile SingularAttribute<Endereco, String> logradouro;
 	public static volatile SingularAttribute<Endereco, String> bairro;
 	public static volatile SingularAttribute<Endereco, String> cep;
-
+	
 	public static final String CIDADE = "cidade";
 	public static final String ESTADO = "estado";
 	public static final String COMPLEMENTO = "complemento";
@@ -25,4 +25,3 @@ public abstract class Endereco_ {
 	public static final String CEP = "cep";
 
 }
-
