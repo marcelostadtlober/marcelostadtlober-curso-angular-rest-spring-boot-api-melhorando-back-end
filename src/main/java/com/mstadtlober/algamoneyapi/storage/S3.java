@@ -2,6 +2,7 @@ package com.mstadtlober.algamoneyapi.storage;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.ObjectTagging;
 import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.SetObjectTaggingRequest;
 import com.amazonaws.services.s3.model.Tag;
 import com.mstadtlober.algamoneyapi.config.property.AlgamoneyApiProperty;
 
@@ -64,6 +66,18 @@ public class S3 {
 		}
 	}
 
+	public void salvar(String objeto) {
+		SetObjectTaggingRequest setObjectTaggingRequest = new SetObjectTaggingRequest(property.getS3().getBucket(),
+				objeto,
+				new ObjectTagging(Collections.emptyList()));
+		
+		amazonS3.setObjectTagging(setObjectTaggingRequest);
+	}
+	
+	public String configurarUrl(String objeto) {
+		return "\\\\" + property.getS3().getBucket() + "s3.amazonaws.com/" + objeto;
+	}
+	
 	private String gerarNomeUnico(String originalFilename) {
 		return UUID.randomUUID().toString() + "_" + originalFilename;
 	}
